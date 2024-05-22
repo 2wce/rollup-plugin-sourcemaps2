@@ -6,7 +6,8 @@ import { rollup } from 'rollup';
 import ts from 'typescript';
 import util from 'util';
 
-import sourcemaps, { SourcemapsPluginOptions } from '..';
+import sourcemaps from '..';
+import { SourcemapsPluginOptions } from '../types';
 
 const inputPath = path.join(__dirname, '../index.ts');
 const inputText = fs.readFileSync(inputPath, 'utf8');

@@ -28,7 +28,7 @@
     "prebuild": "npm run lint && npm run format && npm run typecheck",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc",
     "prepublishOnly": "npm run build",
     "preversion": "npm run test"
   },

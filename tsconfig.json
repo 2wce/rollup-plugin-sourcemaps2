@@ -2,8 +2,9 @@
   "compilerOptions": {
     "target": "es2020",
     "declarationDir": "dist",
-    "rootDir": "src",
     "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "src",
     "sourceMap": true,
     "inlineSources": true,
     "strict": true,
@@ -12,7 +13,8 @@
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["node", "jest"]
   },
   "include": ["src"],
   "exclude": ["node_modules"]

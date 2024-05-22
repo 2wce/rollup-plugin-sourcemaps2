@@ -1,13 +1,7 @@
 import { ExistingRawSourceMap } from 'rollup';
 import * as urlLib from 'url';
 import decodeUriComponent from './decode-uri-component';
-
-interface ResolvedSourceMap {
-  map: ExistingRawSourceMap;
-  url: string | null;
-  sourcesRelativeTo: string;
-  sourceMappingURL: string;
-}
+import { ResolvedSourceMap, ResolvedSources } from './types';
 
 function resolveUrl(...args: string[]): string {
   return args.reduce((resolved, nextUrl) => urlLib.resolve(resolved, nextUrl), '');
@@ -52,11 +46,6 @@ export async function resolveSourceMap(
   const url = resolveUrl(codeUrl, sourceMappingURL);
   const map = parseMapToJSON(String(await read(customDecodeUriComponent(url))));
   return { sourceMappingURL, url, sourcesRelativeTo: url, map };
-}
-
-interface ResolvedSources {
-  sourcesResolved: string[];
-  sourcesContent: (string | Error)[];
 }
 
 export async function resolveSources(

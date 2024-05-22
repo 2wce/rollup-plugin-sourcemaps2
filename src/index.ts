@@ -1,16 +1,11 @@
-import pluginUtils, { CreateFilter } from '@rollup/pluginutils';
+import pluginUtils from '@rollup/pluginutils';
 import fs from 'fs';
 import { ExistingRawSourceMap, Plugin } from 'rollup';
 import { promisify } from 'util';
 import { resolveSourceMap, resolveSources } from './source-map-resolve';
+import { SourcemapsPluginOptions } from './types';
 
 const { createFilter } = pluginUtils;
-
-export interface SourcemapsPluginOptions {
-  include?: Parameters<CreateFilter>[0];
-  exclude?: Parameters<CreateFilter>[1];
-  readFile?(path: string, callback: (error: Error | null, data: Buffer | string) => void): void;
-}
 
 export default function sourcemaps({
   include,
