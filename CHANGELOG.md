@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.3.0
+
+### Minor Changes
+
+- a6c10b1: chore: add declaration files
+
 ## 0.2.0
 
 ### Minor Changes
