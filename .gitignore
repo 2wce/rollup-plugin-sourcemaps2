@@ -4,5 +4,5 @@ coverage
 .vscode
 .code
 .DS_Store
-yarn.lock
-package-lock.json
+tsconfig.tsbuildinfo
+.rollup.cache

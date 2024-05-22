@@ -1,13 +1,14 @@
-# rollup-plugin-sourcemaps
+# rollup-plugin-sourcemaps2
 
 [![Version](https://img.shields.io/npm/v/rollup-plugin-sourcemaps2.svg)](https://www.npmjs.com/package/rollup-plugin-sourcemaps2)
 [![License](https://img.shields.io/npm/l/rollup-plugin-sourcemaps2.svg)](https://github.com/2wce/rollup-plugin-sourcemaps/blob/main/LICENSE)
 ![Build Status](https://github.com/2wce/rollup-plugin-sourcemaps/actions/workflows/release.yml/badge.svg)
 
+
 [Rollup](https://rollupjs.org) plugin for loading files with existing source maps.
 Inspired by [webpack/source-map-loader](https://github.com/webpack/source-map-loader).
 
-Works with rollup 4 or later.
+Works with rollup 4.x.x or later.
 
 This is building on top of the awesome work of [Max Davidson](https://github.com/maxdavidson/rollup-plugin-sourcemaps). The repo wasn't getting updates so I took it upon myself to keep a copy updated
 
@@ -22,7 +23,7 @@ you might be able to use the [`inputSourceMap`](https://babeljs.io/docs/en/optio
 ## Usage
 
 ```javascript
-import sourcemaps from 'rollup-plugin-sourcemaps';
+import sourcemaps from 'rollup-plugin-sourcemaps2';
 
 export default {
   input: 'src/index.js',

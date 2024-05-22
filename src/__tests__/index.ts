@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/require-await, @typescript-eslint/no-non-null-assertion */
+import { describe, expect, it, test } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
-import util from 'util';
-import ts from 'typescript';
 import { rollup } from 'rollup';
-import { describe, it, test, expect } from '@jest/globals';
+import ts from 'typescript';
+import util from 'util';
 
 import sourcemaps, { SourcemapsPluginOptions } from '..';
 
@@ -95,15 +95,9 @@ describe('detects files with source maps', () => {
     ${false}  | ${true}         | ${true}
   `(
     'sourceMap: $sourceMap, inlineSourceMap: $inlineSourceMap, inlineSources: $inlineSources',
-    async ({
-      sourceMap,
-      inlineSourceMap,
-      inlineSources,
-    }: {
-      sourceMap: boolean;
-      inlineSourceMap: boolean;
-      inlineSources: boolean;
-    }) => {
+    async (args: Record<string, boolean>) => {
+      const { sourceMap, inlineSourceMap, inlineSources } = args;
+
       const { outputText, sourceMapText } = ts.transpileModule(inputText, {
         fileName: inputPath,
         compilerOptions: {
