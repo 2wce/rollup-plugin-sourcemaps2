@@ -25,6 +25,12 @@
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off"
       }
+    },
+    {
+      "files": ["src/__tests__/**/*"],
+      "env": {
+        "jest": true
+      }
     }
   ]
 }

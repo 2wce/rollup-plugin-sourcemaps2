@@ -1,4 +1,3 @@
-import atob from 'atob';
 import { ExistingRawSourceMap } from 'rollup';
 import * as urlLib from 'url';
 import decodeUriComponent from './decode-uri-component';
