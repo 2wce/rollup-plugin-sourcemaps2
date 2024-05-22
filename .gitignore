@@ -5,3 +5,4 @@ coverage
 .code
 .DS_Store
 tsconfig.tsbuildinfo
+.rollup.cache
