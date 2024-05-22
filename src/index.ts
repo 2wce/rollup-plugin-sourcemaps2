@@ -1,8 +1,8 @@
-import fs from 'fs';
-import { promisify } from 'util';
-import { Plugin, ExistingRawSourceMap } from 'rollup';
 import pluginUtils, { CreateFilter } from '@rollup/pluginutils';
+import fs from 'fs';
+import { ExistingRawSourceMap, Plugin } from 'rollup';
 import sourceMapResolve from 'source-map-resolve';
+import { promisify } from 'util';
 
 const { createFilter } = pluginUtils;
 const { resolveSourceMap, resolveSources } = sourceMapResolve;
@@ -36,8 +36,13 @@ export default function sourcemaps({
       try {
         code = (await promisifiedReadFile(id)).toString();
       } catch {
-        this.warn('Failed reading file');
-        return null;
+        try {
+          // Try without a query suffix that some plugins use
+          code = (await promisifiedReadFile(id.replace(/\?.*$/, ''))).toString();
+        } catch (e) {
+          this.warn(`Failed reading file`);
+          return null;
+        }
       }
 
       let map: ExistingRawSourceMap;
