@@ -1,5 +1,6 @@
 import pluginUtils from '@rollup/pluginutils';
 import fs from 'fs';
+import { resolve as resolvePath } from 'path';
 import { ExistingRawSourceMap, Plugin, PluginContext } from 'rollup';
 import { promisify } from 'util';
 import { resolveSourceMap, resolveSources } from './source-map-resolve';
@@ -26,6 +27,9 @@ export default function sourcemaps(
       if (!filter(id)) {
         return null;
       }
+
+      // Allow the original file to be watched
+      this.addWatchFile(resolvePath(id));
 
       try {
         // Try to read the file with the given id
