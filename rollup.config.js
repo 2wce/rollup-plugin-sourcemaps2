@@ -3,7 +3,8 @@ import typescript from '@rollup/plugin-typescript';
 
 export default /** @type {import('rollup').RollupOptions} */ ({
   input: 'src/index.ts',
-  external: () => true,
+  // internals are ./source-map-resolve or .../src/source-map-resolve.ts
+  external: name => !(name.startsWith('.') || name.endsWith('.ts')),
   plugins: [typescript()],
   output: [
     {
