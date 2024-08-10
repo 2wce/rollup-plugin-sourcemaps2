@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.4.0
+
+### Minor Changes
+
+- 4e12df2: feat: fixes build & watches files on load
+
 ## 0.3.0
 
 ### Minor Changes
