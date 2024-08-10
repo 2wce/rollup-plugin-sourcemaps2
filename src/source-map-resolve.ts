@@ -1,7 +1,18 @@
 import { ExistingRawSourceMap } from 'rollup';
 import * as urlLib from 'url';
-import decodeUriComponent from './decode-uri-component';
-import { ResolvedSourceMap, ResolvedSources } from './types';
+import decodeUriComponent from './decode-uri-component.js';
+
+interface ResolvedSources {
+  sourcesResolved: string[];
+  sourcesContent: (string | Error)[];
+}
+
+interface ResolvedSourceMap {
+  map: ExistingRawSourceMap;
+  url: string | null;
+  sourcesRelativeTo: string;
+  sourceMappingURL: string;
+}
 
 function resolveUrl(...args: string[]): string {
   return args.reduce((resolved, nextUrl) => urlLib.resolve(resolved, nextUrl), '');

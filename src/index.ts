@@ -1,11 +1,16 @@
-import pluginUtils from '@rollup/pluginutils';
+import pluginUtils, { CreateFilter } from '@rollup/pluginutils';
 import fs from 'fs';
 import { ExistingRawSourceMap, Plugin, PluginContext } from 'rollup';
 import { promisify } from 'util';
-import { resolveSourceMap, resolveSources } from './source-map-resolve';
-import { SourcemapsPluginOptions } from './types';
+import { resolveSourceMap, resolveSources } from './source-map-resolve.js';
 
 const { createFilter } = pluginUtils;
+
+export interface SourcemapsPluginOptions {
+  include?: Parameters<CreateFilter>[0];
+  exclude?: Parameters<CreateFilter>[1];
+  readFile?(path: string, callback: (error: Error | null, data: Buffer | string) => void): void;
+}
 
 export default function sourcemaps(
   // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -30,11 +35,15 @@ export default function sourcemaps(
       try {
         // Try to read the file with the given id
         code = (await promisifiedReadFile(id)).toString();
+        // Add the file to the watch list
+        this.addWatchFile(id);
       } catch {
         try {
           // If reading fails, try again without a query suffix that some plugins use
           code = (await promisifiedReadFile(id.replace(/\?.*$/, ''))).toString();
-        } catch (e) {
+          // Add the file to the watch list
+          this.addWatchFile(id);
+        } catch {
           // If reading still fails, warn and return null
           this.warn(`Failed reading file`);
           return null;
