@@ -40,9 +40,10 @@ export default function sourcemaps(
       } catch {
         try {
           // If reading fails, try again without a query suffix that some plugins use
-          code = (await promisifiedReadFile(id.replace(/\?.*$/, ''))).toString();
+          const cleanId = id.replace(/\?.*$/, '');
+          code = (await promisifiedReadFile(cleanId)).toString();
           // Add the file to the watch list
-          this.addWatchFile(id);
+          this.addWatchFile(cleanId);
         } catch {
           // If reading still fails, warn and return null
           this.warn(`Failed reading file`);
