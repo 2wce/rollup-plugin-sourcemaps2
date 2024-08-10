@@ -24,7 +24,7 @@
   "scripts": {
     "release": "changeset publish",
     "build": "rollup --config rollup.config.js",
-    "test": "jest",
+    "test": "vitest",
     "prebuild": "rimraf dist && npm run lint && npm run format && npm run typecheck",
     "postbuild": "node patch-paths.cjs",
     "lint": "eslint .",

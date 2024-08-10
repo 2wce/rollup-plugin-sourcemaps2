@@ -27,10 +27,7 @@
       }
     },
     {
-      "files": ["src/__tests__/**/*"],
-      "env": {
-        "jest": true
-      }
+      "files": ["src/__tests__/**/*"]
     }
   ]
 }
