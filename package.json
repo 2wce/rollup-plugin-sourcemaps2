@@ -50,7 +50,6 @@
     "@changesets/cli": "2.27.7",
     "@rollup/plugin-swc": "0.3.1",
     "@swc/core": "1.7.10",
-    "@types/jest": "^29.5.12",
     "@types/node": "22.1.0",
     "@typescript-eslint/eslint-plugin": "8.0.1",
     "@typescript-eslint/parser": "8.0.1",
@@ -58,12 +57,12 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-prettier": "5.2.1",
     "glob": "11.0.0",
-    "jest": "29.7.0",
     "prettier": "3.3.3",
     "rimraf": "6.0.1",
     "rollup": "4.20.0",
-    "ts-jest": "29.2.4",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.5"
   },
   "peerDependencies": {
     "@types/node": ">=18.0.0",

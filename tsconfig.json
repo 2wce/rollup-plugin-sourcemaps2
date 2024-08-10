@@ -18,6 +18,6 @@
     "allowSyntheticDefaultImports": true,
     "types": ["node", "jest"]
   },
-  "include": ["src"],
+  "include": ["src", "vitest.config.ts"],
   "exclude": ["node_modules"]
 }
