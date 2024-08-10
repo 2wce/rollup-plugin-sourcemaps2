@@ -1,6 +1,6 @@
 const token = '%[a-f0-9]{2}';
-const singleMatcher = new RegExp('(' + token + ')|([^%]+?)', 'gi');
-const multiMatcher = new RegExp('(' + token + ')+', 'gi');
+const singleMatcher = new RegExp(`(${token})|([^%]+?)`, 'gi');
+const multiMatcher = new RegExp(`(${token})+`, 'gi');
 
 function decodeComponents(components: RegExpMatchArray | [], split?: number): string[] {
   try {
@@ -31,12 +31,12 @@ function decode(input: string): string {
   try {
     return decodeURIComponent(input);
   } catch {
-    let tokens = input.match(singleMatcher) || [];
+    let tokens = RegExp(singleMatcher).exec(input) || [];
 
     for (let i = 1; i < tokens.length; i++) {
       input = decodeComponents(tokens, i).join('');
 
-      tokens = input.match(singleMatcher) || [];
+      tokens = RegExp(singleMatcher).exec(input) || [];
     }
 
     return input;

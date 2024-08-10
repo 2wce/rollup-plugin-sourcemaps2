@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/require-await, @typescript-eslint/no-non-null-assertion */
-import { describe, expect, it, test } from '@jest/globals';
+import { describe, expect, it, test } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import { rollup } from 'rollup';
@@ -7,7 +7,7 @@ import ts from 'typescript';
 import util from 'util';
 
 import sourcemaps from '..';
-import { SourcemapsPluginOptions } from '../types';
+import { SourcemapsPluginOptions } from '..';
 
 const inputPath = path.join(__dirname, '../index.ts');
 const inputText = fs.readFileSync(inputPath, 'utf8');
