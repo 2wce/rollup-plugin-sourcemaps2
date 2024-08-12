@@ -50,7 +50,7 @@
     "@changesets/cli": "2.27.7",
     "@rollup/plugin-swc": "0.3.1",
     "@swc/core": "1.7.10",
-    "@types/node": "22.1.0",
+    "@types/node": "22.2.0",
     "@typescript-eslint/eslint-plugin": "8.1.0",
     "@typescript-eslint/parser": "8.0.1",
     "eslint": "^9.9.0",
