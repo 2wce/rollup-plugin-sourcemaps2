@@ -1,7 +1,7 @@
-import pluginUtils, { CreateFilter } from '@rollup/pluginutils';
-import fs from 'fs';
-import { ExistingRawSourceMap, Plugin, PluginContext } from 'rollup';
-import { promisify } from 'util';
+import fs from 'node:fs';
+import { promisify } from 'node:util';
+import pluginUtils, { type CreateFilter } from '@rollup/pluginutils';
+import type { ExistingRawSourceMap, Plugin, PluginContext } from 'rollup';
 import { resolveSourceMap, resolveSources } from './source-map-resolve.js';
 
 const { createFilter } = pluginUtils;
@@ -46,7 +46,7 @@ export default function sourcemaps(
           this.addWatchFile(cleanId);
         } catch {
           // If reading still fails, warn and return null
-          this.warn(`Failed reading file`);
+          this.warn('Failed reading file');
           return null;
         }
       }

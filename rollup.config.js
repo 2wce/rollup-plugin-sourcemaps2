@@ -1,7 +1,7 @@
-import swc from '@rollup/plugin-swc';
-import { globSync } from 'glob';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import swc from '@rollup/plugin-swc';
+import { globSync } from 'glob';
 
 export default /** @type {import('rollup').RollupOptions} */ ({
   input: Object.fromEntries(
@@ -16,6 +16,7 @@ export default /** @type {import('rollup').RollupOptions} */ ({
         fileURLToPath(new URL(file, import.meta.url)),
       ]),
   ),
+
   external: () => true,
   plugins: [swc()],
   output: [
@@ -32,6 +33,9 @@ export default /** @type {import('rollup').RollupOptions} */ ({
       sourcemap: true,
       entryFileNames: '[name].cjs',
       preserveModules: true,
+      generatedCode: {
+        constBindings: true,
+      },
     },
   ],
 });

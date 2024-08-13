@@ -1,5 +1,5 @@
-import { ExistingRawSourceMap } from 'rollup';
-import * as urlLib from 'url';
+import * as urlLib from 'node:url';
+import type { ExistingRawSourceMap } from 'rollup';
 import decodeUriComponent from './decode-uri-component.js';
 
 interface ResolvedSources {
@@ -47,7 +47,7 @@ export async function resolveSourceMap(
   if (dataUri) {
     const mimeType = dataUri[1] || 'text/plain';
     if (!/^(?:application|text)\/json$/.test(mimeType)) {
-      throw new Error('Unuseful data uri mime type: ' + mimeType);
+      throw new Error(`Unuseful data uri mime type: ${mimeType}`);
     }
     const map = parseMapToJSON(
       (dataUri[2] === ';base64' ? atob : decodeURIComponent)(dataUri[3] || ''),
