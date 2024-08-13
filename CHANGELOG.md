@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.4.1
+
+### Patch Changes
+
+- fc3c329: fix: improved types & reduced dependencies
+
 ## 0.4.0
 
 ### Minor Changes
