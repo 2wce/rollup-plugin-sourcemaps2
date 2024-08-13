@@ -26,6 +26,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+
       # Install package dependencies
       - name: Install
         run: npm ci

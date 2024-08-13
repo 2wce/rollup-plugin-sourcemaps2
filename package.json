@@ -25,44 +25,32 @@
     "release": "changeset publish",
     "build": "rollup --config rollup.config.js",
     "test": "vitest",
-    "prebuild": "rimraf dist && npm run lint && npm run format && npm run typecheck",
-    "postbuild": "node patch-paths.cjs",
-    "lint": "eslint .",
-    "format": "prettier --write .",
+    "prebuild": "rimraf dist && npm run lint:ci && npm run typecheck",
+    "postbuild": "node patch-paths.js",
+    "lint": "biome check --write .",
+    "lint:ci": "biome ci .",
     "typecheck": "tsc",
     "prepublishOnly": "npm run build",
     "preversion": "npm run test"
   },
-  "keywords": [
-    "rollup",
-    "rollup-plugin",
-    "sourcemap",
-    "source-map",
-    "sourceMappingURL"
-  ],
-  "files": [
-    "dist"
-  ],
+  "keywords": ["rollup", "rollup-plugin", "sourcemap", "source-map", "sourceMappingURL"],
+  "files": ["dist"],
   "dependencies": {
-    "@rollup/pluginutils": "^5.1.0"
+    "@rollup/pluginutils": "5.1.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@changesets/cli": "2.27.7",
     "@rollup/plugin-swc": "0.3.1",
     "@swc/core": "1.7.10",
     "@types/node": "22.2.0",
-    "@typescript-eslint/eslint-plugin": "8.1.0",
-    "@typescript-eslint/parser": "8.1.0",
-    "eslint": "^9.9.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-prettier": "5.2.1",
     "glob": "11.0.0",
     "prettier": "3.3.3",
     "rimraf": "6.0.1",
     "rollup": "4.20.0",
     "typescript": "5.5.4",
-    "vite": "^5.4.0",
-    "vitest": "^2.0.5"
+    "vite": "5.4.0",
+    "vitest": "2.0.5"
   },
   "peerDependencies": {
     "@types/node": ">=18.0.0",

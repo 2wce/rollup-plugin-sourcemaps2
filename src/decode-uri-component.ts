@@ -3,6 +3,8 @@ const singleMatcher = new RegExp(`(${token})|([^%]+?)`, 'gi');
 const multiMatcher = new RegExp(`(${token})+`, 'gi');
 
 function decodeComponents(components: RegExpMatchArray | [], split?: number): string[] {
+  let splitAt = split;
+
   try {
     // Try to decode the entire string first
     return [decodeURIComponent(components.join(''))];
@@ -14,11 +16,11 @@ function decodeComponents(components: RegExpMatchArray | [], split?: number): st
     return components;
   }
 
-  split = split ?? 1;
+  splitAt = splitAt ?? 1;
 
   // Split the array in 2 parts
-  const left = components.slice(0, split) as RegExpMatchArray;
-  const right = components.slice(split) as RegExpMatchArray;
+  const left = components.slice(0, splitAt) as RegExpMatchArray;
+  const right = components.slice(splitAt) as RegExpMatchArray;
 
   return Array.prototype.concat.call(
     [],
@@ -28,29 +30,33 @@ function decodeComponents(components: RegExpMatchArray | [], split?: number): st
 }
 
 function decode(input: string): string {
+  let localInput = input;
+
   try {
-    return decodeURIComponent(input);
+    return decodeURIComponent(localInput);
   } catch {
-    let tokens = RegExp(singleMatcher).exec(input) || [];
+    let tokens = RegExp(singleMatcher).exec(localInput) || [];
 
     for (let i = 1; i < tokens.length; i++) {
-      input = decodeComponents(tokens, i).join('');
+      localInput = decodeComponents(tokens, i).join('');
 
-      tokens = RegExp(singleMatcher).exec(input) || [];
+      tokens = RegExp(singleMatcher).exec(localInput) || [];
     }
 
-    return input;
+    return localInput;
   }
 }
 
 function customDecodeURIComponent(input: string): string {
+  let localInput = input;
+
   // Keep track of all the replacements and prefill the map with the `BOM`
   const replaceMap: Record<string, string> = {
     '%FE%FF': '\uFFFD\uFFFD',
     '%FF%FE': '\uFFFD\uFFFD',
   };
 
-  let match = multiMatcher.exec(input);
+  let match = multiMatcher.exec(localInput);
   while (match) {
     try {
       // Decode as big chunks as possible
@@ -63,7 +69,7 @@ function customDecodeURIComponent(input: string): string {
       }
     }
 
-    match = multiMatcher.exec(input);
+    match = multiMatcher.exec(localInput);
   }
 
   // Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
@@ -73,16 +79,16 @@ function customDecodeURIComponent(input: string): string {
 
   for (const key of entries) {
     // Replace all decoded components
-    input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
+    localInput = localInput.replace(new RegExp(key, 'g'), replaceMap[key]);
   }
 
-  return input;
+  return localInput;
 }
 
 export default function decodeUriComponent(encodedURI: string): string {
   if (typeof encodedURI !== 'string') {
     throw new TypeError(
-      'Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`',
+      `Expected \`encodedURI\` to be of type \`string\`, got \`${typeof encodedURI}\``,
     );
   }
 
