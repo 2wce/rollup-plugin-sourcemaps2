@@ -1,19 +1,19 @@
-const fs = require('fs');
-const glob = require('glob');
+import { readFileSync, writeFileSync } from 'node:fs';
+import { sync } from 'glob';
 
 // Function to update require statements in a file
 const updateRequireStatements = filePath => {
-  const content = fs.readFileSync(filePath, 'utf8');
+  const content = readFileSync(filePath, 'utf8');
   const updatedContent = content.replace(
     /require\((['"]\.\/[^'"]+)\.js(['"])\)/g,
     'require($1.cjs$2)',
   );
-  fs.writeFileSync(filePath, updatedContent, 'utf8');
+  writeFileSync(filePath, updatedContent, 'utf8');
   console.log(`Updated require statements in ${filePath}`);
 };
 
 // Find all .cjs files in the dist directory
-const cjsFiles = glob.sync('dist/**/*.cjs');
+const cjsFiles = sync('dist/**/*.cjs');
 
 // Update each .cjs file
 cjsFiles.forEach(updateRequireStatements);
