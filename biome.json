@@ -6,7 +6,7 @@
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,
-    "ignore": [],
+    "ignore": ["package.json", "dist"],
     "attributePosition": "auto",
     "indentStyle": "space",
     "indentWidth": 2,
