@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@changesets/cli": "2.27.7",
+    "@changesets/cli": "2.27.8",
     "@rollup/plugin-swc": "0.3.1",
     "@swc/core": "1.7.24",
     "@types/node": "22.5.2",
