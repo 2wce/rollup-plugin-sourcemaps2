@@ -44,7 +44,7 @@
     "dist"
   ],
   "dependencies": {
-    "@rollup/pluginutils": "5.1.0"
+    "@rollup/pluginutils": "5.1.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.1",
