@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.4.2
+
+### Patch Changes
+
+- 258da1f: chore: update package dependencies 🧹🧹
+
 ## 0.4.1
 
 ### Patch Changes
