@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.4.3
+
+### Patch Changes
+
+- abeda6d: chore: update package dependencies 🧹🧹
+
 ## 0.4.2
 
 ### Patch Changes
