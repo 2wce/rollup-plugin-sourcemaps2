@@ -1,5 +1,15 @@
 # rollup-plugin-sourcemaps2
 
+## 0.5.0
+
+### Minor Changes
+
+- e9932a3: fix: resolve only the last source mapping url in case there are multiple urls from source.
+
+### Patch Changes
+
+- e9932a3: chore: update package dependencies 🧹🧹
+
 ## 0.4.4
 
 ### Patch Changes
