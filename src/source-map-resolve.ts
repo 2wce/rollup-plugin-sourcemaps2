@@ -27,10 +27,10 @@ function parseMapToJSON(string: string): ExistingRawSourceMap {
 }
 
 const sourceMappingURLRegex =
-  /(?:\/\*(?:\s*\r?\n(?:\/\/)?)?(?:[#@] sourceMappingURL=([^\s'"]*))\s*\*\/|\/\/(?:[#@] sourceMappingURL=([^\s'"]*)))\s*/;
+  /(?:\/\*(?:\s*\r?\n(?:\/\/)?)?(?:[#@] sourceMappingURL=([^\s'"]*))\s*\*\/|\/\/(?:[#@] sourceMappingURL=([^\s'"]*)))\s*/g;
 
 function getSourceMappingUrl(code: string): string | null {
-  const match = sourceMappingURLRegex.exec(code);
+  const match = Array.from(code.matchAll(sourceMappingURLRegex)).pop();
   return match ? match[1] || match[2] || '' : null;
 }
 

@@ -7,6 +7,7 @@ import ts from 'typescript';
 import { describe, expect, it, test } from 'vitest';
 
 import sourcemaps, { type SourcemapsPluginOptions } from '..';
+import { resolveSourceMap } from '../source-map-resolve';
 
 const inputPath = path.join(__dirname, '../index.ts');
 const inputText = fs.readFileSync(inputPath, 'utf8');
@@ -247,4 +248,32 @@ it('handles failing source maps reads', async () => {
   expect(map).toBeDefined();
   expect(map?.sources.map(source => path.normalize(source))).toStrictEqual([outputPath]);
   expect(map?.sourcesContent).toStrictEqual([outputText]);
+});
+
+it('finds last source map file definition', async () => {
+  const multipleSourceMappingFile = `
+    function test(sourceMapUrl: string): string {
+      return \`/*# sourceMappingURL=\${sourceMapUrl} */\`;
+    }
+    //# sourceMappingURL=index.js.map
+  `;
+
+  const multipleSourceMappingMapFile =
+    '{"version":3,"file":"index.js","sourceRoot":"","sources":["index.ts"],"names":[],"mappings":"AAAA,SAAS,IAAI,CAAC,YAAoB;IAChC,OAAO,+BAAwB,YAAY,QAAK,CAAC;AACnD,CAAC"}';
+
+  let requestedSourceMap: string | null = null;
+
+  const map = await resolveSourceMap(
+    multipleSourceMappingFile,
+    '/dev/null/index.js',
+    async path => {
+      requestedSourceMap = path;
+      return multipleSourceMappingMapFile;
+    },
+  );
+
+  expect(requestedSourceMap).toEqual('/dev/null/index.js.map');
+
+  expect(map).toBeDefined();
+  expect(map?.url).toEqual('/dev/null/index.js.map');
 });

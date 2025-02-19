@@ -3,6 +3,7 @@ dist
 coverage
 .vscode
 .code
+.idea
 .DS_Store
 tsconfig.tsbuildinfo
 .rollup.cache
