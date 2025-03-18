@@ -58,7 +58,7 @@
     "rollup": "4.36.0",
     "typescript": "5.8.2",
     "vite": "6.2.2",
-    "vitest": "3.0.8"
+    "vitest": "3.0.9"
   },
   "peerDependencies": {
     "@types/node": ">=18.0.0",
