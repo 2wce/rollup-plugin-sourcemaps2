@@ -51,7 +51,7 @@
     "@changesets/cli": "2.29.3",
     "@rollup/plugin-swc": "0.4.0",
     "@swc/core": "1.11.24",
-    "@types/node": "22.15.3",
+    "@types/node": "22.15.9",
     "glob": "11.0.2",
     "prettier": "3.5.3",
     "rimraf": "6.0.1",
