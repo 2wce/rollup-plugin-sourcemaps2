@@ -206,7 +206,7 @@ it('delegates failing file reads to the next plugin', async () => {
     outputText,
     sourceMapText,
     pluginOptions: {
-      readFile(_path: string, cb: (error: Error | null, data: Buffer | string) => void) {
+      readFile(_path: string, cb: (error: Error | null, data: string) => void) {
         cb(new Error('Failed!'), '');
       },
     },
@@ -276,4 +276,28 @@ it('finds last source map file definition', async () => {
 
   expect(map).toBeDefined();
   expect(map?.url).toEqual('/dev/null/index.js.map');
+});
+
+it('correctly handles Chinese and non-ASCII characters in source files', async () => {
+  // Chinese string
+  const chineseText = 'console.log("你好，世界！"); // 中文字符测试';
+  // Transpile with source map
+  const { outputText, sourceMapText } = ts.transpileModule(chineseText, {
+    fileName: inputPath,
+    compilerOptions: {
+      target: ts.ScriptTarget.ES2017,
+      sourceMap: true,
+      inlineSourceMap: false,
+      inlineSources: true,
+    },
+  });
+
+  expect(sourceMapText).toBeDefined();
+
+  const { map, code } = await rollupBundle({ outputText, sourceMapText });
+
+  // The code should contain the original Chinese characters
+  expect(code).toContain('你好，世界');
+  // The sourcesContent should also contain the original Chinese characters
+  expect(map?.sourcesContent?.[0]).toContain('你好，世界');
 });

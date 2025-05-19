@@ -9,18 +9,29 @@ const { createFilter } = pluginUtils;
 export interface SourcemapsPluginOptions {
   include?: Parameters<CreateFilter>[0];
   exclude?: Parameters<CreateFilter>[1];
-  readFile?(path: string, callback: (error: Error | null, data: Buffer | string) => void): void;
+  readFile?(path: string, callback: (error: Error | null, data: string) => void): void;
 }
 
 export default function sourcemaps(
   // eslint-disable-next-line @typescript-eslint/unbound-method
-  { include, exclude, readFile = fs.readFile }: SourcemapsPluginOptions = {},
+  { include, exclude, readFile }: SourcemapsPluginOptions = {},
 ): Plugin {
   // Create a filter function based on the include and exclude options
   const filter = createFilter(include, exclude);
 
+  // Default readFile that always reads as UTF-8 string
+  const defaultReadFile = (
+    path: string,
+    cb: (err: NodeJS.ErrnoException | null, data: string) => void,
+  ) => {
+    fs.readFile(path, 'utf8', cb);
+  };
+
+  // Use the provided readFile or the default one
+  const effectiveReadFile = readFile || defaultReadFile;
+
   // Promisify the readFile function
-  const promisifiedReadFile = promisify(readFile);
+  const promisifiedReadFile = promisify(effectiveReadFile);
 
   return {
     name: 'sourcemaps',
@@ -34,7 +45,7 @@ export default function sourcemaps(
 
       try {
         // Try to read the file with the given id
-        code = (await promisifiedReadFile(id)).toString();
+        code = await promisifiedReadFile(id);
         // Add the file to the watch list
         this.addWatchFile(id);
       } catch {
