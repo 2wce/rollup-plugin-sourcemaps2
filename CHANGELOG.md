@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.5.2
+
+### Patch Changes
+
+- 2790ea0: fix: correctly encode non ascii characters on reading file
+
 ## 0.5.1
 
 ### Patch Changes
