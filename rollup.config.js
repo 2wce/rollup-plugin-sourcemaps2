@@ -3,6 +3,9 @@ import { fileURLToPath } from 'node:url';
 import swc from '@rollup/plugin-swc';
 import { globSync } from 'glob';
 
+// Make source maps optional for production builds
+const isProduction = process.env.NODE_ENV === 'production';
+
 export default /** @type {import('rollup').RollupOptions} */ ({
   input: Object.fromEntries(
     globSync('src/**/*.ts')
@@ -23,14 +26,14 @@ export default /** @type {import('rollup').RollupOptions} */ ({
     {
       dir: 'dist',
       format: 'es',
-      sourcemap: true,
+      sourcemap: !isProduction, // Disable source maps in production
       entryFileNames: '[name].js',
       preserveModules: true,
     },
     {
       dir: 'dist',
       format: 'cjs',
-      sourcemap: true,
+      sourcemap: false, // Disable source maps for CJS builds to reduce size
       entryFileNames: '[name].cjs',
       preserveModules: true,
       generatedCode: {

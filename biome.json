@@ -1,12 +1,8 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,
-    "ignore": ["package.json", "dist"],
     "attributePosition": "auto",
     "indentStyle": "space",
     "indentWidth": 2,
@@ -18,6 +14,9 @@
     "rules": {
       "recommended": true
     }
+  },
+  "files": {
+    "includes": ["**/*.ts", "**/*.js", "**/*.json"]
   },
   "vcs": {
     "enabled": true,
