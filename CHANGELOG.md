@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.5.4
+
+### Patch Changes
+
+- 498f3a7: chore: minor package updates
+
 ## 0.5.3
 
 ### Patch Changes
