@@ -47,7 +47,7 @@
     "@rollup/pluginutils": "5.3.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.3",
+    "@biomejs/biome": "2.3.4",
     "@changesets/cli": "2.29.7",
     "@rollup/plugin-swc": "0.4.0",
     "@swc/core": "1.14.0",
