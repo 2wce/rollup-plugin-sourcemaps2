@@ -26,11 +26,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Setup Biome
-        uses: biomejs/setup-biome@8e620439fe892e9cd7a0764748da9f7df4d1468a # v2
-        with:
-          version: latest
-
       # Install package dependencies
       - name: Install
         run: npm ci
@@ -75,12 +70,32 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@c48e67d110a68bc90ccf1098e9646092baacaa87 # v1.6.0
-        with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: yarn release
+      # Build the package
+      - name: Build
+        run: yarn build
+
+      # Create Release Pull Request or Publish to npm
+      - name: Create Release Pull Request or Publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Check if there are any changesets
+          if [ -n "$(ls -A .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+            # Version packages and create PR
+            npx changeset version
+
+            # Check if there are changes to commit
+            if [ -n "$(git status --porcelain)" ]; then
+              git add .
+              git commit -m "Version packages"
+              git push
+            fi
+
+            # Publish to npm
+            npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
+            yarn release
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
