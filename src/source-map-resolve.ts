@@ -1,4 +1,4 @@
-import * as urlLib from 'node:url';
+import path from 'node:path';
 import type { ExistingRawSourceMap } from 'rollup';
 import decodeUriComponent from './decode-uri-component.js';
 
@@ -14,8 +14,36 @@ interface ResolvedSourceMap {
   sourceMappingURL: string;
 }
 
+function isWindowsDrivePath(value: string): boolean {
+  return /^[a-zA-Z]:[\\/]/.test(value);
+}
+
+function isUrl(value: string): boolean {
+  return /^[a-zA-Z][a-zA-Z\\d+.-]*:/.test(value) && !isWindowsDrivePath(value);
+}
+
 function resolveUrl(...args: string[]): string {
-  return args.reduce((resolved, nextUrl) => urlLib.resolve(resolved, nextUrl), '');
+  let resolved = args[0] ?? '';
+  for (let index = 1; index < args.length; index++) {
+    const nextUrl = args[index] ?? '';
+    if (!nextUrl) {
+      continue;
+    }
+
+    if (isUrl(nextUrl)) {
+      resolved = nextUrl;
+      continue;
+    }
+
+    if (isUrl(resolved)) {
+      resolved = new URL(nextUrl, resolved).toString();
+      continue;
+    }
+
+    resolved = path.resolve(path.dirname(resolved), nextUrl);
+  }
+
+  return resolved;
 }
 
 function customDecodeUriComponent(encodedURI: string): string {
@@ -49,9 +77,12 @@ export async function resolveSourceMap(
     if (!/^(?:application|text)\/json$/.test(mimeType)) {
       throw new Error(`Unuseful data uri mime type: ${mimeType}`);
     }
-    const map = parseMapToJSON(
-      (dataUri[2] === ';base64' ? atob : decodeURIComponent)(dataUri[3] || ''),
-    );
+    const payload = dataUri[3] || '';
+    const decoded =
+      dataUri[2] === ';base64'
+        ? Buffer.from(payload, 'base64').toString('utf8')
+        : decodeURIComponent(payload);
+    const map = parseMapToJSON(decoded);
     return { sourceMappingURL, url: null, sourcesRelativeTo: codeUrl, map };
   }
   const url = resolveUrl(codeUrl, sourceMappingURL);
