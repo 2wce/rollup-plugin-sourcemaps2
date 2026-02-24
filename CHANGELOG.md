@@ -1,5 +1,12 @@
 # rollup-plugin-sourcemaps2
 
+## 0.5.5
+
+### Patch Changes
+
+- 72e2646: chore: dep updates
+- 4c23f84: minor package updates
+
 ## 0.5.4
 
 ### Patch Changes
