@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.5.6
+
+### Patch Changes
+
+- 21dbc7f: update ci
+
 ## 0.5.5
 
 ### Patch Changes
