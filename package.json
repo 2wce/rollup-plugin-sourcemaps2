@@ -50,7 +50,7 @@
     "@biomejs/biome": "2.4.13",
     "@changesets/cli": "2.31.0",
     "@rollup/plugin-swc": "0.4.0",
-    "@swc/core": "1.15.32",
+    "@swc/core": "1.15.33",
     "@types/node": "25.6.0",
     "glob": "13.0.6",
     "prettier": "3.8.3",
