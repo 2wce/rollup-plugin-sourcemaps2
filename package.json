@@ -41,6 +41,10 @@
     "source-map",
     "sourceMappingURL"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "files": [
     "dist"
   ],
