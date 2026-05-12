@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.5.7
+
+### Patch Changes
+
+- fe181fe: chore: fix missing types issue
+
 ## 0.5.6
 
 ### Patch Changes
