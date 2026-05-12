@@ -6,6 +6,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: macos-latest
@@ -16,73 +19,67 @@ jobs:
         node-version: [20.x, 22.x]
 
     steps:
-      # Fetch the latest commit
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      # Setup Node.js using the appropriate version
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
+        with:
+          version: 11
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
-      # Install package dependencies
       - name: Install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
-      # Run build
       - name: Build
-        run: yarn build
+        run: pnpm build
 
-      # Run tests
       - name: Test
-        run: yarn test
-
-      # - name: Coveralls
-      #   uses: coverallsapp/github-action@v2
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm test
 
   release:
     strategy:
       matrix:
-        # Run the steps below with the following versions of Node.js
         node-version: [22.x]
 
-    # Only release on push to main
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: macos-latest
-
-    # Waits for test jobs for each Node.js version to complete
     needs: [test]
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      # Setup Node.js using the appropriate version
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
+        with:
+          version: 11
+
       - name: Use Node.js 22
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22.x
+          cache: 'pnpm'
           registry-url: https://registry.npmjs.org
 
-      # Install package dependencies
       - name: Install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
-      # Build the package
       - name: Build
-        run: yarn build
+        run: pnpm build
 
       - name: Disable GPG signing in CI
         run: git config --global commit.gpgsign false
 
-      # Creates/updates a release PR when changesets exist.
-      # Publishes to npm when there are no pending changesets (e.g. after release PR merge).
       - name: Create Release Pull Request or Publish
         run: |
           git config user.name "github-actions[bot]"
@@ -96,7 +93,7 @@ jobs:
           fi
 
           if [ "$has_changesets" = "true" ]; then
-            yarn changeset version
+            pnpm changeset version
 
             if [ -z "$(git status --porcelain)" ]; then
               echo "No version changes detected after changeset version."
@@ -120,10 +117,8 @@ jobs:
                 --body "This PR was created automatically by the release workflow."
             fi
           else
-            yarn release
+            pnpm release
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
