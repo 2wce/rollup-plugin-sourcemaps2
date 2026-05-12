@@ -25,7 +25,7 @@
     "release": "changeset publish",
     "build": "rollup --config rollup.config.js",
     "test": "vitest",
-    "prebuild": "rimraf dist && npm run lint:ci && npm run typecheck",
+    "prebuild": "rimraf dist tsconfig.tsbuildinfo && npm run lint:ci && npm run typecheck",
     "postbuild": "node patch-paths.js",
     "lint": "biome check --write .",
     "lint:ci": "biome ci .",
