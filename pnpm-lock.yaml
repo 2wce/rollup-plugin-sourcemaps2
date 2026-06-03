@@ -19,8 +19,8 @@ importers:
         specifier: 2.31.0
         version: 2.31.0(@types/node@25.9.1)
       '@rollup/plugin-swc':
-        specifier: 0.4.0
-        version: 0.4.0(@swc/core@1.15.40)(rollup@4.60.4)
+        specifier: 0.4.1
+        version: 0.4.1(@swc/core@1.15.40)(rollup@4.60.4)
       '@swc/core':
         specifier: 1.15.40
         version: 1.15.40
@@ -313,8 +313,8 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
-  '@rollup/plugin-swc@0.4.0':
-    resolution: {integrity: sha512-oAtqXa8rOl7BOK1Rz3rRxI+LIL53S9SqO2KSq2UUUzWgOgXg6492Jh5mL2mv/f9cpit8zFWdwILuVeozZ0C8mg==}
+  '@rollup/plugin-swc@0.4.1':
+    resolution: {integrity: sha512-widfnT1TbDc4hsV37PQ61ZoLGPJ7STZE4lQzA3gWKbcMfzjOgiGsoTYfSsq21H4J2UY1y3MKwejXTMkwN2tEtQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@swc/core': ^1.3.0
@@ -1059,8 +1059,8 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
 
-  smob@1.6.1:
-    resolution: {integrity: sha512-KAkBqZl3c2GvNgNhcoyJae1aKldDW0LO279wF9bk1PnluRTETKBq0WyzRXxEhoQLk56yHaOY4JCBEKDuJIET5g==}
+  smob@1.6.2:
+    resolution: {integrity: sha512-RQsvleCbF8cVHEv+xuDGaA4pOizFqJ0GgjtMSRo6oP8pnN7WsigHgVGey6aILRBKv4W2YOMHLqbKdnB6hpB9fw==}
     engines: {node: '>=20.0.0'}
 
   source-map-js@1.2.1:
@@ -1514,11 +1514,11 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@rollup/plugin-swc@0.4.0(@swc/core@1.15.40)(rollup@4.60.4)':
+  '@rollup/plugin-swc@0.4.1(@swc/core@1.15.40)(rollup@4.60.4)':
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@4.60.4)
       '@swc/core': 1.15.40
-      smob: 1.6.1
+      smob: 1.6.2
     optionalDependencies:
       rollup: 4.60.4
 
@@ -2122,7 +2122,7 @@ snapshots:
 
   slash@3.0.0: {}
 
-  smob@1.6.1: {}
+  smob@1.6.2: {}
 
   source-map-js@1.2.1: {}
 
