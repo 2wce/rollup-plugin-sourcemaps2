@@ -19,6 +19,10 @@
     "type": "git",
     "url": "git+https://github.com/2wce/rollup-plugin-sourcemaps2.git"
   },
+  "homepage": "https://github.com/2wce/rollup-plugin-sourcemaps2#readme",
+  "bugs": {
+    "url": "https://github.com/2wce/rollup-plugin-sourcemaps2/issues"
+  },
   "engines": {
     "node": ">=22.13.0"
   },
