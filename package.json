@@ -4,6 +4,10 @@
   "description": "Rollup plugin for grabbing source maps from sourceMappingURLs",
   "author": "Kudakwashe Mupeni <said.coyness-0m@icloud.com>",
   "license": "MIT",
+  "homepage": "https://github.com/2wce/rollup-plugin-sourcemaps2#readme",
+  "bugs": {
+    "url": "https://github.com/2wce/rollup-plugin-sourcemaps2/issues"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
