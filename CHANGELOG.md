@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.5.8
+
+### Patch Changes
+
+- 0c3ab2f: Add npm `homepage` and `bugs.url` metadata fields to package.json
+
 ## 0.5.7
 
 ### Patch Changes
