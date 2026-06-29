@@ -59,7 +59,7 @@
     "@biomejs/biome": "2.5.1",
     "@changesets/cli": "2.31.0",
     "@rollup/plugin-swc": "0.4.1",
-    "@swc/core": "1.15.41",
+    "@swc/core": "1.15.43",
     "@types/node": "25.9.3",
     "glob": "13.0.6",
     "prettier": "3.8.4",
