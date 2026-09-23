@@ -1,5 +1,11 @@
 # rollup-plugin-sourcemaps2
 
+## 0.5.9
+
+### Patch Changes
+
+- 84a6caf: Document architecture decisions and publish the current maintenance baseline.
+
 ## 0.5.8
 
 ### Patch Changes
