@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import util from 'node:util';
+import { transformSync } from '@swc/core';
 import { rollup } from 'rollup';
-import ts from 'typescript';
 /* eslint-disable @typescript-eslint/require-await, @typescript-eslint/no-non-null-assertion */
 import { describe, expect, it, test } from 'vitest';
 
@@ -24,6 +24,47 @@ const sourceMapPath = path.format({
   ext: '.js.map',
 });
 
+type TranspileOptions = {
+  fileName: string;
+  compilerOptions: {
+    inlineSourceMap?: boolean;
+    inlineSources?: boolean;
+    sourceMap?: boolean;
+  };
+};
+
+type TranspileOutput = {
+  outputText: string;
+  sourceMapText?: string;
+};
+
+function transpile(
+  input: string,
+  { fileName, compilerOptions }: TranspileOptions,
+): TranspileOutput {
+  const sourceMaps = compilerOptions.inlineSourceMap
+    ? 'inline'
+    : compilerOptions.sourceMap === true;
+  const result = transformSync(input, {
+    filename: fileName,
+    inlineSourcesContent: compilerOptions.inlineSources,
+    jsc: {
+      parser: {
+        syntax: 'typescript',
+      },
+      target: 'es2017',
+    },
+    sourceMaps,
+  });
+
+  return {
+    outputText: compilerOptions.sourceMap
+      ? `${result.code}\n//# sourceMappingURL=${path.basename(sourceMapPath)}`
+      : result.code,
+    sourceMapText: result.map,
+  };
+}
+
 // Function to compare two file paths
 function comparePath(a: string, b: string): boolean {
   // Split the paths into segments
@@ -44,7 +85,7 @@ async function rollupBundle({
   outputText,
   sourceMapText,
   pluginOptions,
-}: ts.TranspileOutput & {
+}: TranspileOutput & {
   pluginOptions?: SourcemapsPluginOptions;
 }) {
   const load = async (path: string) => {
@@ -88,10 +129,9 @@ async function rollupBundle({
 }
 
 it('ignores files with no source maps', async () => {
-  const { outputText, sourceMapText } = ts.transpileModule(inputText, {
+  const { outputText, sourceMapText } = transpile(inputText, {
     fileName: inputPath,
     compilerOptions: {
-      target: ts.ScriptTarget.ES2017,
       sourceMap: false,
       inlineSourceMap: false,
     },
@@ -116,10 +156,9 @@ describe('detects files with source maps', () => {
   `(
     'sourceMap: $sourceMap, inlineSourceMap: $inlineSourceMap, inlineSources: $inlineSources',
     async ({ sourceMap, inlineSourceMap, inlineSources }: Record<string, boolean>) => {
-      const { outputText, sourceMapText } = ts.transpileModule(inputText, {
+      const { outputText, sourceMapText } = transpile(inputText, {
         fileName: inputPath,
         compilerOptions: {
-          target: ts.ScriptTarget.ES2017,
           sourceMap,
           inlineSourceMap,
           inlineSources,
@@ -143,10 +182,9 @@ describe('detects files with source maps', () => {
 
 describe('ignores filtered files', () => {
   test('included', async () => {
-    const { outputText, sourceMapText } = ts.transpileModule(inputText, {
+    const { outputText, sourceMapText } = transpile(inputText, {
       fileName: inputPath,
       compilerOptions: {
-        target: ts.ScriptTarget.ES2017,
         sourceMap: true,
       },
     });
@@ -167,10 +205,9 @@ describe('ignores filtered files', () => {
   });
 
   test('excluded', async () => {
-    const { outputText, sourceMapText } = ts.transpileModule(inputText, {
+    const { outputText, sourceMapText } = transpile(inputText, {
       fileName: inputPath,
       compilerOptions: {
-        target: ts.ScriptTarget.ES2017,
         sourceMap: true,
       },
     });
@@ -192,10 +229,9 @@ describe('ignores filtered files', () => {
 });
 
 it('delegates failing file reads to the next plugin', async () => {
-  const { outputText, sourceMapText } = ts.transpileModule(inputText, {
+  const { outputText, sourceMapText } = transpile(inputText, {
     fileName: inputPath,
     compilerOptions: {
-      target: ts.ScriptTarget.ES2017,
       sourceMap: true,
     },
   });
@@ -218,10 +254,9 @@ it('delegates failing file reads to the next plugin', async () => {
 });
 
 it('handles failing source maps reads', async () => {
-  const { outputText, sourceMapText } = ts.transpileModule(inputText, {
+  const { outputText, sourceMapText } = transpile(inputText, {
     fileName: inputPath,
     compilerOptions: {
-      target: ts.ScriptTarget.ES2017,
       sourceMap: true,
     },
   });
@@ -282,10 +317,9 @@ it('correctly handles Chinese and non-ASCII characters in source files', async (
   // Chinese string
   const chineseText = 'console.log("你好，世界！"); // 中文字符测试';
   // Transpile with source map
-  const { outputText, sourceMapText } = ts.transpileModule(chineseText, {
+  const { outputText, sourceMapText } = transpile(chineseText, {
     fileName: inputPath,
     compilerOptions: {
-      target: ts.ScriptTarget.ES2017,
       sourceMap: true,
       inlineSourceMap: false,
       inlineSources: true,
