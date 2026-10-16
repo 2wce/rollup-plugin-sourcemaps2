@@ -24,7 +24,18 @@ export default function sourcemaps(
     path: string,
     cb: (err: NodeJS.ErrnoException | null, data: string) => void,
   ) => {
-    fs.readFile(path, 'utf8', cb);
+    // Some paths are readable without being source files. macOS devfs lets read() succeed on
+    // the /dev directory. Without this guard the raw directory bytes are returned as module
+    // source and /dev is handed to the bundler's watcher.
+    fs.stat(path, (err, stats) => {
+      if (err) {
+        cb(err, '');
+      } else if (!stats.isFile()) {
+        cb(new Error(`Not a regular file: ${path}`), '');
+      } else {
+        fs.readFile(path, 'utf8', cb);
+      }
+    });
   };
 
   // Use the provided readFile or the default one
