@@ -1,10 +1,11 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import util from 'node:util';
 import { transformSync } from '@swc/core';
-import { rollup } from 'rollup';
+import { type PluginContext, rollup } from 'rollup';
 /* eslint-disable @typescript-eslint/require-await, @typescript-eslint/no-non-null-assertion */
-import { describe, expect, it, test } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import sourcemaps, { type SourcemapsPluginOptions } from '..';
 import { resolveSourceMap } from '../source-map-resolve';
@@ -126,6 +127,24 @@ async function rollupBundle({
   });
 
   return output[0];
+}
+
+// Invokes the plugin's load hook directly with no readFile option so the default reader runs
+async function loadWithDefaultReadFile(id: string) {
+  // No options, so the plugin falls back to its fs-backed defaultReadFile
+  const plugin = sourcemaps();
+
+  // Minimal stand-in for Rollup's PluginContext; only the two methods load() calls are mocked
+  const context = { addWatchFile: vi.fn(), warn: vi.fn() } as unknown as PluginContext;
+
+  // Plugin['load'] may be a function or an object hook; this plugin always returns a function
+  const load = plugin.load as (this: PluginContext, id: string) => Promise<unknown>;
+
+  // Call the hook the way Rollup would, with the context bound as `this`
+  const result = await load.call(context, id);
+
+  // Return the context too so callers can assert on addWatchFile and warn
+  return { result, context };
 }
 
 it('ignores files with no source maps', async () => {
@@ -311,6 +330,49 @@ it('finds last source map file definition', async () => {
 
   expect(map).toBeDefined();
   expect(map?.url).toEqual('/dev/null/index.js.map');
+});
+
+it('skips directories even when the filesystem lets them be read', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sourcemaps2-'));
+  // Mimic macOS devfs, where read() on the /dev directory succeeds and returns raw bytes.
+  // fs.stat is left untouched so the guard runs against a real directory.
+  const readFile = vi
+    .spyOn(fs, 'readFile')
+    .mockImplementation(((
+      _path: string,
+      _options: unknown,
+      cb: (err: null, data: string) => void,
+    ) => cb(null, 'not a source file')) as typeof fs.readFile);
+
+  try {
+    const { result, context } = await loadWithDefaultReadFile(dir);
+
+    expect(result).toBeNull();
+    expect(readFile).not.toHaveBeenCalled();
+    expect(context.addWatchFile).not.toHaveBeenCalled();
+    expect(context.warn).toHaveBeenCalledWith('Failed reading file');
+  } finally {
+    readFile.mockRestore();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+it('reads regular files with the default readFile', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sourcemaps2-'));
+  const filePath = path.join(dir, 'plain.js');
+  const fileText = 'export const value = 1;\n';
+  fs.writeFileSync(filePath, fileText);
+
+  try {
+    const { result, context } = await loadWithDefaultReadFile(filePath);
+
+    expect(result).toStrictEqual(fileText);
+    expect(context.addWatchFile).toHaveBeenCalledTimes(1);
+    expect(context.addWatchFile).toHaveBeenCalledWith(filePath);
+    expect(context.warn).not.toHaveBeenCalled();
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 it('correctly handles Chinese and non-ASCII characters in source files', async () => {
