@@ -40,7 +40,9 @@ function resolveUrl(...args: string[]): string {
       continue;
     }
 
-    resolved = path.resolve(path.dirname(resolved), nextUrl);
+    // A trailing slash marks a directory (sourceRoot), so the next segment resolves inside it
+    const base = resolved.endsWith('/') ? resolved : path.dirname(resolved);
+    resolved = path.resolve(base, nextUrl) + (nextUrl.endsWith('/') ? '/' : '');
   }
 
   return resolved;
