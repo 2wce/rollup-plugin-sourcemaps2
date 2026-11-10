@@ -8,7 +8,7 @@ import { type PluginContext, rollup } from 'rollup';
 import { describe, expect, it, test, vi } from 'vitest';
 
 import sourcemaps, { type SourcemapsPluginOptions } from '..';
-import { resolveSourceMap } from '../source-map-resolve';
+import { resolveSourceMap, resolveSources } from '../source-map-resolve';
 
 const inputPath = path.join(__dirname, '../index.ts');
 const inputText = fs.readFileSync(inputPath, 'utf8');
@@ -330,6 +330,32 @@ it('finds last source map file definition', async () => {
 
   expect(map).toBeDefined();
   expect(map?.url).toEqual('/dev/null/index.js.map');
+});
+
+it('resolves sources inside the sourceRoot directory', async () => {
+  const mapUrl = path.join(__dirname, 'dist', 'index.js.map');
+  const requested: string[] = [];
+
+  const { sourcesResolved, sourcesContent } = await resolveSources(
+    {
+      version: 3,
+      file: 'index.js',
+      sourceRoot: 'src',
+      sources: ['index.ts'],
+      names: [],
+      mappings: '',
+    },
+    mapUrl,
+    async source => {
+      requested.push(source);
+      return 'source text';
+    },
+  );
+
+  const expected = path.join(__dirname, 'dist', 'src', 'index.ts');
+  expect(sourcesResolved).toStrictEqual([expected]);
+  expect(requested).toStrictEqual([expected]);
+  expect(sourcesContent).toStrictEqual(['source text']);
 });
 
 it('skips directories even when the filesystem lets them be read', async () => {
