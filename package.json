@@ -61,7 +61,7 @@
     "@rollup/plugin-swc": "0.4.1",
     "@swc/core": "1.16.22",
     "@types/node": "26.6.6",
-    "glob": "14.0.4",
+    "glob": "14.0.6",
     "prettier": "3.9.10",
     "rimraf": "6.1.4",
     "rollup": "4.67.2",
