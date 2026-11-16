@@ -62,7 +62,7 @@
     "@swc/core": "1.16.22",
     "@types/node": "26.6.6",
     "glob": "14.0.6",
-    "prettier": "3.9.10",
+    "prettier": "3.10.1",
     "rimraf": "6.1.4",
     "rollup": "4.67.2",
     "typescript": "7.0.2",

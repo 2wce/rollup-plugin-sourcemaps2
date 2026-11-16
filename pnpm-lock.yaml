@@ -31,8 +31,8 @@ importers:
         specifier: 14.0.6
         version: 14.0.6
       prettier:
-        specifier: 3.9.10
-        version: 3.9.10
+        specifier: 3.10.1
+        version: 3.10.1
       rimraf:
         specifier: 6.1.4
         version: 6.1.4
@@ -951,8 +951,8 @@ packages:
     resolution: {integrity: sha512-RVHEU9/Pp1Fnjr/MpAJsZoADukCKhfIi15OunEYiGktIkYLkPVvC1sioWolGDS7XByMTx9m/IGbro0Js13zhnQ==}
     engines: {node: ^10 || ^12 || >=14}
 
-  prettier@3.9.10:
-    resolution: {integrity: sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==}
+  prettier@3.10.1:
+    resolution: {integrity: sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1770,7 +1770,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.2
 
-  prettier@3.9.10: {}
+  prettier@3.10.1: {}
 
   rimraf@6.1.4:
     dependencies:
